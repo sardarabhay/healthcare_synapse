@@ -10,7 +10,6 @@ import { useState } from "react"
 import { PatientFormValidation } from "@/lib/validation"
 import { useRouter } from "next/navigation"
 import { createUser, registerPatient } from "@/lib/actions/patient.actions"
-import Register from "@/app/patients/[userId]/register/page"
 import { FormFieldType } from "./PatientForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Doctors, GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "@/constants"
@@ -18,7 +17,6 @@ import { Label } from "../ui/label"
 import { SelectItem } from "../ui/select"
 import Image from "next/image"
 import FileUploader from "../FileUploader"
-import { getRandomValues } from "crypto"
 
 
 

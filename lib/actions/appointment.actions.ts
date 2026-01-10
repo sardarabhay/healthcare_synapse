@@ -1,16 +1,20 @@
 "use server"
 
-import { ID } from "node-appwrite";
-import { 
-    APPOINTMENT_COLLECTION_ID, 
+import { ID, Query } from "node-appwrite";
+import {
+    APPOINTMENT_COLLECTION_ID,
     DATABASE_ID,
-    databases 
+    databases
 } from "../appwrite.config";
 import { parseStringify } from "../utils";
+import { Appointment } from "@/types/appwrite.types";
+import { parse } from "path";
+import { revalidatePath } from "next/cache";
+import { getPatient } from "./patient.actions";
 
-export const createAppointment=async(appointment: CreateAppointmentParams)=>{
-    try{
-        const newAppointment=await databases.createDocument(
+export const createAppointment = async (appointment: CreateAppointmentParams) => {
+    try {
+        const newAppointment = await databases.createDocument(
             DATABASE_ID!,
             APPOINTMENT_COLLECTION_ID!,
             ID.unique(),
@@ -18,22 +22,107 @@ export const createAppointment=async(appointment: CreateAppointmentParams)=>{
         );
         return parseStringify(newAppointment);
 
-    }catch(error){
-        console.log("An error occurred while creating appointment:", error);    
+    } catch (error) {
+        console.log("An error occurred while creating appointment:", error);
     }
 };
 
-export const getAppointment=async(appointmentId:string)=>{
-    try{
-        const appointment=await databases.getDocument(
+export const getAppointment = async (appointmentId: string) => {
+    try {
+        const appointment = await databases.getDocument(
             DATABASE_ID!,
             APPOINTMENT_COLLECTION_ID!,
             appointmentId
         );
         return parseStringify(appointment);
-    }catch(error){
+    } catch (error) {
         console.error(
             "An error occurred while retrieving the existing appointment"
             , error);
     }
 };
+
+export const getRecentAppointmentList = async () => {
+    try {
+        const appointments = await databases.listDocuments(
+            DATABASE_ID!,
+            APPOINTMENT_COLLECTION_ID!,
+            [Query.orderDesc("$createdAt")],
+        );
+
+        const intialCounts = {
+            scheduledCount: 0,
+            pendingCount: 0,
+            cancelledCount: 0,
+        };
+
+        const typedAppointments = appointments.documents as unknown as Appointment[];
+
+        const counts = typedAppointments.reduce((acc, appointment) => {
+            switch (appointment.status) {
+                case "scheduled":
+                    acc.scheduledCount += 1;
+                    break;
+                case "pending":
+                    acc.pendingCount += 1;
+                    break;
+                case "cancelled":
+                    acc.cancelledCount += 1;
+                    break;
+            }
+            return acc;
+        }, intialCounts);
+
+        // Enrich each appointment with its patient document (by userId)
+        const enrichedDocuments = await Promise.all(
+            appointments.documents.map(async (doc: any) => {
+                try {
+                    const patient = await getPatient(doc.userId);
+                    return { ...doc, patient };
+                } catch (e) {
+                    return doc;
+                }
+            })
+        );
+
+        const data = {
+            totalCount: appointments.total,
+            ...counts,
+            documents: enrichedDocuments,
+        };
+
+        return parseStringify(data);
+    } catch (error) {
+        console.error(
+            "An error occurred while retrieving recent appointments", error
+        );
+    }
+};
+
+export const updateAppointment = async ({
+    appointmentId,
+    userId,
+    appointment,
+    type
+}: UpdateAppointmentParams) => {
+    try {
+        const updatedAppointment = await databases.updateDocument(
+            DATABASE_ID!,
+            APPOINTMENT_COLLECTION_ID!,
+            appointmentId,
+            appointment,
+        );
+
+        if(!updateAppointment) throw Error;
+
+        revalidatePath("/admin");
+
+        return parseStringify(updatedAppointment);
+
+    } catch (error) {
+        console.error(
+            "An error occurred while scheduling an appointment"
+            , error);
+    }
+
+}

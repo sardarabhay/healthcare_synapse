@@ -12,10 +12,11 @@ import { useRouter } from "next/navigation"
 import { createUser } from "@/lib/actions/patient.actions"
 import { FormFieldType } from "./PatientForm"
 import { Appointment } from "@/types/appwrite.types"
-import { createAppointment } from "@/lib/actions/appointment.actions"
+import { createAppointment, updateAppointment } from "@/lib/actions/appointment.actions"
 import { SelectItem } from "../ui/select"
 import Image from "next/image"
 import { Doctors } from "@/constants"
+import { stat } from "fs"
 
 
 
@@ -87,9 +88,27 @@ const AppointmentForm = ({
                     );
                 }
 
+            }else{
+                const appointmentToUpdate={
+                    userId,
+                    appointmentId:appointment?.$id!,
+                    appointment:{
+                        primaryPhysician: values.primaryPhysician,
+                        schedule: new Date(values.schedule),
+                        status: status as Status,
+                        cancellationReason: values.cancellationReason,
+                    },
+                    type,
+                };
+
+                const updatedAppointment=await updateAppointment(appointmentToUpdate);
+
+                if(updatedAppointment){
+                    form.reset();
+                    setOpen && setOpen(false);
+                    router.refresh();
+                }
             }
-
-
         } catch (err) {
             console.log(err);
         }
@@ -163,7 +182,6 @@ const AppointmentForm = ({
                                 name="reason"
                                 label="Appointment reason"
                                 placeholder="Annual montly check-up"
-                                disabled={type === "schedule"}
                             />
 
                             <CustomFormField
@@ -172,7 +190,6 @@ const AppointmentForm = ({
                                 name="note"
                                 label="Comments/notes"
                                 placeholder="Prefer afternoon appointments, if possible"
-                                disabled={type === "schedule"}
                             />
                         </div>
 

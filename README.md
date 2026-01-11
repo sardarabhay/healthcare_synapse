@@ -16,6 +16,14 @@ A modern healthcare patient management application built with Next.js 16, enabli
 
 [![Live Demo](https://img.shields.io/badge/Demo-Live-brightgreen?style=for-the-badge&logo=vercel)](https://healthcare-synapse.vercel.app/)
 
+### 🔐 Demo Credentials
+
+To access the **Admin Dashboard**, click the "Admin" link on the homepage and enter:
+
+| Access | Passkey |
+|--------|---------|
+| Admin Dashboard | `123456` |
+
 ---
 
 ## ✨ Features

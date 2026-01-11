@@ -178,20 +178,7 @@ healthcare_synapse/
 
 ---
 
-## 👨‍⚕️ Available Doctors
 
-The system comes pre-configured with the following doctors:
-- Dr. Abhinav Verma
-- Dr. Priya Sharma
-- Dr. Tejas Patel
-- Dr. Kartik Srinivasan
-- Dr. Nina Gupta
-- Dr. Rohan Mehta
-- Dr. Sana Khan
-- Dr. Anjali Desai
-- Dr. Hardik Sharma
-
----
 
 ## 🎨 UI/UX Features
 
@@ -226,18 +213,6 @@ The easiest way to deploy is using [Vercel](https://vercel.com):
 4. Deploy!
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new?utm_medium=default-template&filter=next.js)
-
----
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
----
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/sardarabhay/healthcare_synapse/issues).
 
 ---
 

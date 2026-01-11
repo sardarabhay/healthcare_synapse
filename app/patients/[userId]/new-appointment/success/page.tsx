@@ -25,7 +25,7 @@ const RequestSuccess = async({
       <div className="success-img">
         <Link href="/">
           <Image 
-            src="/assets/icons/logo-full.svg" 
+            src="/assets/icons/logo_synapse-remove-bg.png" 
             alt="logo" 
             width={1000} 
             height={1000}
@@ -76,7 +76,7 @@ const RequestSuccess = async({
           </Link>
         </Button>
 
-        <p className="copyright">© 2025 CarePulse</p>
+        <p className="copyright">© 2025 Synapse</p>
       </div>
     </div>
   )

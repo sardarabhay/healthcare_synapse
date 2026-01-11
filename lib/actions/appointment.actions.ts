@@ -4,13 +4,15 @@ import { ID, Query } from "node-appwrite";
 import {
     APPOINTMENT_COLLECTION_ID,
     DATABASE_ID,
-    databases
+    databases,
+    messaging
 } from "../appwrite.config";
-import { parseStringify } from "../utils";
+import { formatDateTime, parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
 import { parse } from "path";
 import { revalidatePath } from "next/cache";
 import { getPatient } from "./patient.actions";
+import { string } from "zod";
 
 export const createAppointment = async (appointment: CreateAppointmentParams) => {
     try {
@@ -115,6 +117,8 @@ export const updateAppointment = async ({
 
         if(!updateAppointment) throw Error;
 
+        const smsMessage=`Greetings from Synapse. ${type==="schedule"?`Your appointment is confirmed for ${formatDateTime(appointment.schedule!).dateTime} with Dr. ${appointment.primaryPhysician}`:`We regret to inform you that your appointment scheduled for ${formatDateTime(appointment.schedule!).dateTime} with Dr. ${appointment.primaryPhysician} has been cancelled. Please contact us for further details.Reason : ${appointment.cancellationReason}`}.`;
+        await sendSMSNotification(userId,smsMessage);
         revalidatePath("/admin");
 
         return parseStringify(updatedAppointment);
@@ -126,3 +130,20 @@ export const updateAppointment = async ({
     }
 
 }
+
+export const sendSMSNotification=async(userId:string,content:string)=>{
+    try{
+        const message=await messaging.createSms(
+            ID.unique(),
+            content,
+            [],
+            [userId]
+        );
+        return parseStringify(message);
+    }catch(error){
+        console.error(
+            "An error occured while sending sms:",error
+        );
+    }
+
+};

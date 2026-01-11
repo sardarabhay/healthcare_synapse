@@ -11,7 +11,7 @@ const Register = async({params}:SearchParamProps) => {
           <section className="remove-scrollbar container ">
             <div className="sub-container max-w-[860px] flex-1 flex-col py-10">
               <Image
-                src="/assets/icons/logo-full.svg"
+                src="/assets/icons/logo_synapse-remove-bg.png"
                 height={1000}
                 width={1000}
                 alt="patient"
@@ -21,13 +21,13 @@ const Register = async({params}:SearchParamProps) => {
               <RegisterForm user={user}/>
     
               <p className="copyright py-12">
-                  © 2025 CarePulse. All rights reserved.
+                  © 2025 Synapse. All rights reserved.
               </p>
             </div>
           </section>
     
           <Image 
-            src="/assets/images/register-img.png"
+            src="/assets/images/Register_Page.png"
             height={1000}
             width={1000}
             alt="patient"

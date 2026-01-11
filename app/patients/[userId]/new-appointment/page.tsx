@@ -11,10 +11,10 @@ const Appointment = async({params}:SearchParamProps) => {
   
   return (
     <div className="flex h-screen max-h-screen">
-          <section className="remove-scrollbar container my-auto ">
+          <section className="remove-scrollbar container ">
             <div className="sub-container max-w-[860px] flex-1 justify-between">
               <Image
-                src="/assets/icons/logo-full.svg"
+                src="/assets/icons/logo_synapse-remove-bg.png"
                 height={1000}
                 width={1000}
                 alt="patient"
@@ -28,13 +28,13 @@ const Appointment = async({params}:SearchParamProps) => {
               />    
     
               <p className="copyright mt-10 py-12">
-                  © 2025 CarePulse. All rights reserved.
+                  © 2025 Synapse. All rights reserved.
               </p>
             </div>
           </section>
     
           <Image 
-            src="/assets/images/appointment-img.png"
+            src="/assets/images/Appointment_Page.png"
             height={1500}
             width={1500}
             alt="appointment"

@@ -10,6 +10,14 @@ A modern healthcare patient management application built with Next.js 16, enabli
 
 ---
 
+## 🌐 Live Demo
+
+🔗 **[View Live Application](https://healthcare-synapse.vercel.app/)**
+
+[![Live Demo](https://img.shields.io/badge/Demo-Live-brightgreen?style=for-the-badge&logo=vercel)](https://healthcare-synapse.vercel.app/)
+
+---
+
 ## ✨ Features
 
 ### 🧑‍⚕️ Patient Features

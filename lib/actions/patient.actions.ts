@@ -92,3 +92,19 @@ export const getPatient=async(userId:string)=>{
         );
     }
 }
+
+export const getUserByEmail = async (email: string) => {
+    try {
+        const documents = await users.list([
+            Query.equal("email", email)
+        ]);
+        
+        if (documents?.users?.length > 0) {
+            return parseStringify(documents.users[0]);
+        }
+        return null;
+    } catch (error) {
+        console.error("An error occurred while retrieving user by email", error);
+        return null;
+    }
+}

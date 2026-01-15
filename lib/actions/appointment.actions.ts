@@ -147,3 +147,51 @@ export const sendSMSNotification=async(userId:string,content:string)=>{
     }
 
 };
+
+export const getPatientAppointments = async (userId: string) => {
+    try {
+        const appointments = await databases.listDocuments(
+            DATABASE_ID!,
+            APPOINTMENT_COLLECTION_ID!,
+            [
+                Query.equal("userId", [userId]),
+                Query.orderDesc("$createdAt")
+            ]
+        );
+
+        const intialCounts = {
+            scheduledCount: 0,
+            pendingCount: 0,
+            cancelledCount: 0,
+        };
+
+        const typedAppointments = appointments.documents as unknown as Appointment[];
+
+        const counts = typedAppointments.reduce((acc, appointment) => {
+            switch (appointment.status) {
+                case "scheduled":
+                    acc.scheduledCount += 1;
+                    break;
+                case "pending":
+                    acc.pendingCount += 1;
+                    break;
+                case "cancelled":
+                    acc.cancelledCount += 1;
+                    break;
+            }
+            return acc;
+        }, intialCounts);
+
+        const data = {
+            totalCount: appointments.total,
+            ...counts,
+            documents: appointments.documents,
+        };
+
+        return parseStringify(data);
+    } catch (error) {
+        console.error(
+            "An error occurred while retrieving patient appointments", error
+        );
+    }
+};

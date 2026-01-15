@@ -57,6 +57,7 @@ const PatientForm = () => {
         <section className="mb-12 space-y-4">
           <h1 className="header">Hi there👋</h1>
           <p className="text-dark-700">Schedule your first appointment.</p>
+          <p className="text-dark-600 text-sm">Already have an account? <a href="/login" className="text-green-500 hover:underline">Login here</a></p>
         </section>
 
         <CustomFormField 

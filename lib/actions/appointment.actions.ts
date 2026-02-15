@@ -9,10 +9,8 @@ import {
 } from "../appwrite.config";
 import { formatDateTime, parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
-import { parse } from "path";
 import { revalidatePath } from "next/cache";
 import { getPatient } from "./patient.actions";
-import { string } from "zod";
 
 export const createAppointment = async (appointment: CreateAppointmentParams) => {
     try {
@@ -25,7 +23,7 @@ export const createAppointment = async (appointment: CreateAppointmentParams) =>
         return parseStringify(newAppointment);
 
     } catch (error) {
-        console.log("An error occurred while creating appointment:", error);
+        console.error("An error occurred while creating appointment:", error);
     }
 };
 
@@ -115,7 +113,7 @@ export const updateAppointment = async ({
             appointment,
         );
 
-        if(!updateAppointment) throw Error;
+        if(!updatedAppointment) throw new Error("Failed to update appointment");
 
         const smsMessage=`Greetings from Synapse. ${type==="schedule"?`Your appointment is confirmed for ${formatDateTime(appointment.schedule!).dateTime} with Dr. ${appointment.primaryPhysician}`:`We regret to inform you that your appointment scheduled for ${formatDateTime(appointment.schedule!).dateTime} with Dr. ${appointment.primaryPhysician} has been cancelled. Please contact us for further details.Reason : ${appointment.cancellationReason}`}.`;
         await sendSMSNotification(userId,smsMessage);

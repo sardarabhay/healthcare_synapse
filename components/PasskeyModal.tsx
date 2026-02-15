@@ -18,11 +18,9 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp"
 import { decryptKey, encryptKey } from "@/lib/utils";
-import { access } from "fs";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { en } from "zod/v4/locales";
 
 const PasskeyModal = () => {
     const router = useRouter();

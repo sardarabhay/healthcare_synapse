@@ -53,7 +53,7 @@ const PatientLoginForm = () => {
       router.push(`/patients/${user.$id}/dashboard`);
 
     } catch (err) {
-      console.log(err);
+      console.error("Login error:", err);
       setError("An error occurred. Please try again.");
       setIsLoading(false);
     }

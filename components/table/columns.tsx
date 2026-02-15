@@ -20,7 +20,6 @@ export const columns: ColumnDef<Appointment>[] = [
     header:"Patient",
     cell:({row})=>{
       const appointment=row.original;
-      console.log(appointment.patient);
       return <p className="text-14-medium">{appointment.patient?.name || "N/A"}</p>;
     },
   },
@@ -57,8 +56,7 @@ export const columns: ColumnDef<Appointment>[] = [
       const doctor=Doctors.find(
         (doctor)=>doctor.name===appointment.primaryPhysician
       );
-      console.log(doctor);
- 
+
       return (
         <div className="flex items-center gap-3">
           <Image

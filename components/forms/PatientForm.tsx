@@ -47,7 +47,7 @@ const PatientForm = () => {
       }
 
     }catch(err){
-      console.log(err);
+      console.error("Error creating user:", err);
     }
   }
 

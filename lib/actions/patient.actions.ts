@@ -13,7 +13,6 @@ export const createUser=async(user: CreateUserParams)=>{
             password:undefined,
             name:user.name
         })
-        console.log({newUser});
         return parseStringify(newUser);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,7 +33,7 @@ export const getUser=async(userId:string)=>{
         return parseStringify(user);
 
     }catch(error){
-        console.log(error);
+        console.error("Error fetching user:", error);
     }
 
 }
@@ -63,7 +62,7 @@ export const registerPatient=async({
             {
                 identificationDocumentId:file?.$id ? file.$id:null,
                 identificationDocumentUrl:file?.$id
-                    ?`${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/view??project=${PROJECT_ID}`
+                    ?`${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/view?project=${PROJECT_ID}`
                     :null,
                     ...patient,
             }

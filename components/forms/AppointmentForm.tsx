@@ -9,14 +9,12 @@ import CustomFormField from "../CustomFormField"
 import { Dispatch, SetStateAction, useState } from "react"
 import { getAppointmentSchema, CreateAppointmentSchema } from "@/lib/validation"
 import { useRouter } from "next/navigation"
-import { createUser } from "@/lib/actions/patient.actions"
 import { FormFieldType } from "./PatientForm"
 import { Appointment } from "@/types/appwrite.types"
 import { createAppointment, updateAppointment } from "@/lib/actions/appointment.actions"
 import { SelectItem } from "../ui/select"
 import Image from "next/image"
 import { Doctors } from "@/constants"
-import { stat } from "fs"
 
 
 
@@ -110,7 +108,7 @@ const AppointmentForm = ({
                 }
             }
         } catch (err) {
-            console.log(err);
+            console.error("Appointment error:", err);
         }
         setIsLoading(false);
     };

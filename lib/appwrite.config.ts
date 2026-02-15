@@ -6,9 +6,8 @@ export const {
     NEXT_PUBLIC_ENDPOINT:ENDPOINT
 }=process.env;
 
-console.log("ENDPOINT Value:", ENDPOINT);
 if (!ENDPOINT || !PROJECT_ID || !API_KEY) {
-  console.error("❌ Environment variables are missing! Check your .env.local file.");
+  throw new Error("Missing required environment variables (ENDPOINT, PROJECT_ID, API_KEY). Check your .env.local file.");
 }
 
 const client =new sdk.Client();

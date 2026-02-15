@@ -9,7 +9,7 @@ import CustomFormField from "../CustomFormField"
 import { useState } from "react"
 import { PatientFormValidation } from "@/lib/validation"
 import { useRouter } from "next/navigation"
-import { createUser, registerPatient } from "@/lib/actions/patient.actions"
+import { registerPatient } from "@/lib/actions/patient.actions"
 import { FormFieldType } from "./PatientForm"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Doctors, GenderOptions, IdentificationTypes, PatientFormDefaultValues } from "@/constants"
@@ -21,9 +21,10 @@ import FileUploader from "../FileUploader"
 
 
 const RegisterForm = ({ user }: { user: User }) => {
-    if(!user) return null;
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+
+    if(!user) return null;
 
     const form = useForm<z.infer<typeof PatientFormValidation>>({
         resolver: zodResolver(PatientFormValidation),
@@ -60,13 +61,11 @@ const RegisterForm = ({ user }: { user: User }) => {
                identificationDocument:formData,
             }
 
-            console.log(values.treatmentConsent);
-
             const patient = await registerPatient(patientData);
             if (patient) router.push(`/patients/${user.$id}/new-appointment`)
 
         } catch (err) {
-            console.log(err);
+            console.error("Registration error:", err);
         }
     }
 

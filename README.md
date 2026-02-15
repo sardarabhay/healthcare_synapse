@@ -7,6 +7,8 @@ A modern healthcare patient management application built with Next.js 16, enabli
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
 ![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38B2AC?logo=tailwind-css)
 ![Appwrite](https://img.shields.io/badge/Appwrite-Backend-F02E65?logo=appwrite)
+![Vitest](https://img.shields.io/badge/Vitest-Unit%20Tests-6E9F18?logo=vitest)
+![Playwright](https://img.shields.io/badge/Playwright-E2E%20Tests-2EAD33?logo=playwright)
 
 ---
 
@@ -45,6 +47,11 @@ To access the **Admin Dashboard**, click the "Admin" link on the homepage and en
 ### 📲 Notifications
 - **SMS Notifications** - Automated SMS alerts for appointment confirmations and cancellations via Appwrite Messaging
 
+### 🔐 Patient Login
+- **Email-based Login** - Existing patients can log in via email to access their dashboard
+- **Patient Dashboard** - View upcoming and past appointments
+- **Smart Routing** - Redirects unregistered users to complete registration
+
 ---
 
 ## 🛠️ Tech Stack
@@ -61,6 +68,8 @@ To access the **Admin Dashboard**, click the "Admin" link on the homepage and en
 | **Phone Input** | react-phone-number-input + libphonenumber-js |
 | **Date Picker** | react-datepicker |
 | **File Upload** | react-dropzone |
+| **Unit Testing** | Vitest + React Testing Library |
+| **E2E Testing** | Playwright |
 
 ---
 
@@ -107,6 +116,21 @@ healthcare_synapse/
 ├── types/
 │   ├── index.d.ts                # TypeScript declarations
 │   └── appwrite.types.ts         # Appwrite type definitions
+├── tests/                        # Unit & component tests (Vitest)
+│   ├── setup.ts                  # Test setup (jest-dom matchers)
+│   ├── lib/
+│   │   ├── validation.test.ts    # Zod schema tests (33 tests)
+│   │   └── utils.test.ts         # Utility function tests (22 tests)
+│   ├── constants/
+│   │   └── index.test.ts         # Constants tests (14 tests)
+│   └── components/
+│       ├── StatusBadge.test.tsx   # StatusBadge tests (7 tests)
+│       ├── StatCard.test.tsx      # StatCard tests (7 tests)
+│       └── SubmitButton.test.tsx  # SubmitButton tests (7 tests)
+├── e2e/                          # End-to-end tests (Playwright)
+│   └── app.spec.ts               # Critical flow E2E tests (11 tests)
+├── vitest.config.ts              # Vitest configuration
+├── playwright.config.ts          # Playwright configuration
 └── public/assets/                # Static assets (icons, images)
 ```
 
@@ -206,6 +230,46 @@ healthcare_synapse/
 
 ---
 
+## 🧪 Testing
+
+The project includes a comprehensive testing suite with **90 unit tests** and **11 E2E tests**.
+
+### Unit & Component Tests (Vitest + React Testing Library)
+
+| Test Suite | Tests | Coverage |
+|------------|-------|----------|
+| Validation Schemas | 33 | All 5 Zod schemas — `UserFormValidation`, `PatientFormValidation`, `CreateAppointmentSchema`, `ScheduleAppointmentSchema`, `CancelAppointmentSchema` + `getAppointmentSchema` factory |
+| Utility Functions | 22 | `cn`, `parseStringify`, `formatDateTime`, `encryptKey`/`decryptKey` |
+| Constants | 14 | `GenderOptions`, `PatientFormDefaultValues`, `IdentificationTypes`, `Doctors`, `StatusIcon` |
+| StatusBadge | 7 | Rendering, CSS class variants, icon selection for all 3 statuses |
+| StatCard | 7 | Rendering, background variants, icon/count display |
+| SubmitButton | 7 | Loading state, disabled state, custom className |
+
+### E2E Tests (Playwright)
+
+| Suite | Tests | Flows |
+|-------|-------|-------|
+| Home Page | 5 | Form rendering, navigation links, admin modal, validation |
+| Login Page | 3 | Page load, error handling, sign-up link |
+| Admin Dashboard | 1 | Page access |
+| Navigation & Routing | 2 | Invalid routes, direct access handling |
+
+```bash
+# Run unit tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run with coverage report
+npm run test:coverage
+
+# Run E2E tests (starts dev server automatically)
+npm run test:e2e
+```
+
+---
+
 ## 📜 Scripts
 
 | Command | Description |
@@ -214,6 +278,10 @@ healthcare_synapse/
 | `npm run build` | Build for production |
 | `npm run start` | Start production server |
 | `npm run lint` | Run ESLint |
+| `npm test` | Run unit tests (Vitest) |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run test:coverage` | Generate coverage report |
+| `npm run test:e2e` | Run E2E tests (Playwright) |
 
 ---
 
